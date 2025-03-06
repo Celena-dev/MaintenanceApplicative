@@ -25,9 +25,9 @@ Si vous souhaitez approfondir, je vous recommande vivement la lecture du livre s
 ### Kata \#1 GildedRose - par Terry Hughes et adapté par [Emily Bache](https://github.com/emilybache)
 
 Dans ce Kata, vous allez:  
-✅ Comprendre l'importance des **tests unitaires** pour le *refactoring*  
-✅ Découvrir les [**ApprovalTests**](https://github.com/approvals/ApprovalTests.Java)  
-✅ Rédiger des tests unitaire avec une **couverture de code de 100%**  
-✅ Utiliser la méthode **mutation testing** pour garantir l'exhaustivité des tests unitaires  
-✅ Appliquer la méthode de refactoring "**lift up conditional**"  
-✅ Utiliser le **polymorphisme** pour un *refactoring* encore plus efficace  
+❌ Comprendre l'importance des **tests unitaires** pour le *refactoring*  
+❌ Découvrir les [**ApprovalTests**](https://github.com/approvals/ApprovalTests.Java)  
+❌ Rédiger des tests unitaire avec une **couverture de code de 100%**  
+❌ Utiliser la méthode **mutation testing** pour garantir l'exhaustivité des tests unitaires  
+❌ Appliquer la méthode de refactoring "**lift up conditional**"  
+❌ Utiliser le **polymorphisme** pour un *refactoring* encore plus efficace  
