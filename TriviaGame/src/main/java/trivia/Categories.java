@@ -6,7 +6,7 @@ public enum Categories {
     SCIENCE("Science"),
     SPORTS("Sports"),
     ROCK("Rock"),
-    GEOGRAPHIE("Géogrephie"),
+    GEOGRAPHIE("Géographie"),
     ;
 
 

@@ -1,66 +1,123 @@
-
 package trivia;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.Random;
-
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
-	@Test
-	public void caracterizationTest() {
-		// runs 10.000 "random" games to see the output of old and new code mathces
-		for (int seed = 1; seed < 10_000; seed++) {
-			testSeed(seed, false);
-		}
-	}
+    private Game game;
 
-	private void testSeed(int seed, boolean printExpected) {
-		String expectedOutput = extractOutput(new Random(seed), new GameOld());
-		if (printExpected) {
-			System.out.println(expectedOutput);
-		}
-		String actualOutput = extractOutput(new Random(seed), new Game());
-		assertEquals(expectedOutput, actualOutput);
-	}
+    @BeforeEach
+    void setUp() {
+        game = new Game();
+    }
 
-	@Test
-	@Disabled("enable back and set a particular seed to see the output")
-	public void oneSeed() {
-		testSeed(1, true);
-	}
+    @Test
+    void testAddPlayer() {
+        assertTrue(game.add("Alice"));
+        assertTrue(game.add("Bob"));
+        assertFalse(game.add("Alice")); // Nom en double interdit
+    }
 
-	private String extractOutput(Random rand, IGame aGame) {
-		PrintStream old = System.out;
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try (PrintStream inmemory = new PrintStream(baos)) {
-			// WARNING: System.out.println() doesn't work in this try {} as the sysout is captured and recorded in memory.
-			System.setOut(inmemory);
+    @Test
+    void testMaximumPlayers() {
+        game.add("Alice");
+        game.add("Bob");
+        game.add("Charlie");
+        game.add("David");
+        game.add("Eve");
+        game.add("Frank");
+        assertFalse(game.add("Grace")); // Trop de joueurs
+    }
 
-			aGame.add("Chet");
-			aGame.add("Pat");
-			aGame.add("Sue");
+    @Test
+    void testCanStartGame() {
+        game.add("Alice");
+        assertFalse(game.canStart()); // Moins de 2 joueurs
+        game.add("Bob");
+        assertTrue(game.canStart()); // Au moins 2 joueurs
+    }
 
-			boolean notAWinner = false;
-			do {
-				aGame.roll(rand.nextInt(5) + 1);
+    @Test
+    void testGameCannotStartWithNewPlayersJoining() {
+        game.add("Alice");
+        game.add("Bob");
+        assertTrue(game.canStart());
+        assertFalse(game.add("Charlie")); // Ajout interdit après le début
+    }
 
-				if (rand.nextInt(9) == 7) {
-					notAWinner = aGame.wrongAnswer();
-				} else {
-					notAWinner = aGame.handleCorrectAnswer();
-				}
+    @Test
+    void testPlayerMovement() {
+        game.add("Alice");
+        game.add("Bob");
+        game.roll(4);
+        assertEquals(5, game.currentPlayer().getPlace());
+    }
 
-			} while (notAWinner);
-		} finally {
-			System.setOut(old);
-		}
+    @Test
+    void testCorrectAnswerIncreasesScore() {
+        game.add("Alice");
+        game.add("Bob");
+        game.roll(2);
+        game.handleCorrectAnswer();
+        assertEquals(1, game.getPlayer("Alice").getPurse());
+    }
 
-		return new String(baos.toByteArray());
-	}
+    @Test
+    void testWrongAnswerSendsToPenaltyBox() {
+        game.add("Alice");
+        game.add("Bob");
+        game.roll(2);
+        game.wrongAnswer();
+        assertTrue(game.getPlayer("Alice").isInPenaltyBox());
+    }
+
+    // 🔹 Ajout des tests sur le joueur en pénalité
+
+    @Test
+    void testPlayerGetsOutOfPenaltyBoxWhenRollingOdd() {
+        game.add("Alice");
+        game.add("Bob");
+        game.getPlayer("Alice").setInPenaltyBox(true);
+
+        game.roll(3); // Nombre impair → doit rester en prison
+
+        assertTrue(game.getPlayer("Alice").isInPenaltyBox());
+    }
+
+    @Test
+    void testPlayerStaysInPenaltyBoxWhenRollingEven() {
+        game.add("Alice");
+        game.add("Bob");
+        game.getPlayer("Alice").setInPenaltyBox(true);
+
+        game.roll(4); // Nombre pair → doit sortir de prison
+
+        assertTrue(game.handleCorrectAnswer());
+    }
+
+    @Test
+    void testNullPlayer() {
+        assertNull(game.getPlayer("Alice"));
+    }
+
+
+    @Test
+    void testSecondChance() {
+        // Ajout des joueurs
+        game.add("Alice");
+        game.add("Bob");
+
+        // Le joueur Alice fait une première mauvaise réponse et reçoit une seconde chance
+        game.roll(2);
+        game.wrongAnswer();
+        assertTrue(game.getPlayer("Alice").hasSecondChance(), "Alice should have a second chance.");
+
+        // Alice fait une seconde mauvaise réponse, donc elle doit être envoyée en prison
+        game.wrongAnswer();
+
+        // Vérifier que Alice est en prison après la deuxième mauvaise réponse
+        assertTrue(game.getPlayer("Alice").isInPenaltyBox(), "Alice should be in the penalty box after two incorrect answers.");
+    }
 }

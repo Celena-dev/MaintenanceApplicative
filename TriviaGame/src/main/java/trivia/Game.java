@@ -11,6 +11,8 @@ import java.util.Map;
 public class Game implements IGame {
     public static final int NB_CASES = 12;
     public static final int WINNER_SCORE = 6;
+    public static final int MAX_PLAYERS = 6;
+    private boolean gameStarted = false;
 
 
     private static final Categories[] CATEGORIES = Categories.values();
@@ -35,20 +37,36 @@ public class Game implements IGame {
 
 
     public boolean canStart() {
-        return players.size() >= 2;
+        if (players.size() >= 2) {
+            gameStarted = true;
+            return true;
+        }else{
+            System.out.println("Not enough players to start the game (Minimum 2)");
+            return false;
+        }
     }
 
 
     public boolean add(String playerName) {
-        if (players.size() < 6) {
-            players.add(new Player(playerName));
-            System.out.println(playerName + " was added");
-            System.out.println("They are player number " + players.size());
-            return true;
+        if (gameStarted) {
+            System.out.println("Unable to add player: game has already started.");
+            return false;
         }
+            if (players.size() < MAX_PLAYERS) {
+                for (Player player : players) {
+                    if (player.getName().equals(playerName)) {
+                        System.out.println("Player name already exists");
+                        return false;
+                    }
+                }
+                players.add(new Player(playerName));
+                System.out.println(playerName + " was added");
+                System.out.println("They are player number " + players.size());
+                return true;
+            } else {
+                System.out.println("Too much players in the game (Maximum 6)");
+            }
 
-
-        System.out.println("Too much players in the game (Maximum 6)");
         return false;
     }
 
@@ -106,16 +124,22 @@ public class Game implements IGame {
     public boolean wrongAnswer() {
         Player player = currentPlayer();
         System.out.println("Question was incorrectly answered");
-        System.out.println(player.getName() + " was sent to the penalty box");
 
+        if(player.hasSecondChance()) {
+            System.out.println(player.getName() + " has a second chance");
+            player.resetSecondChance();
+            return false;
+        }else{
+            System.out.println(player.getName() + " was sent to the penalty box");
+            player.giveSecondChance();
+            player.setInPenaltyBox(true);
+        }
 
-        player.setInPenaltyBox(true);
 
 
         nextPlayer();
         return true;
     }
-
 
     public void movePlayer(Player player, int roll) {
         player.move(roll);
@@ -141,6 +165,15 @@ public class Game implements IGame {
 
     private boolean didPlayerWin() {
         return currentPlayer().getPurse() != WINNER_SCORE;
+    }
+
+    public Player getPlayer(String name) {
+        for(Player p: players) {
+            if(p.getName().equals(name)) {
+                return p;
+            }
+        }
+        return null;
     }
 }
 
