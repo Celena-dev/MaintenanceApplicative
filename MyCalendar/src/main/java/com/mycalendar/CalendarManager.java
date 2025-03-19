@@ -1,56 +1,59 @@
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+package com.mycalendar;
+
+import com.mycalendar.attributs.*;
+import com.mycalendar.event.*;
+
 import java.util.List;
+import java.util.Objects;
 
+/**
+ * Classe représentant le gestionnaire de calendrier
+ */
 public class CalendarManager {
-    public List<Event> events;
+    private final Events events;
 
+    /**
+     * Constructeur de la classe CalendarManager
+     */
     public CalendarManager() {
-        this.events = new ArrayList<>();
+        this.events = new Events();
     }
 
-    public void ajouterEvent(String type, String title, String proprietaire, LocalDateTime dateDebut, int dureeMinutes,
-                             String lieu, String participants, int frequenceJours) {
-        Event e = new Event(type, title, proprietaire, dateDebut, dureeMinutes, lieu, participants, frequenceJours);
-        events.add(e);
+    /**
+     * Méthode qui ajoute un événement
+     * @param event l'événement à ajouter
+     */
+    public void ajouterEvent(Event event) {
+        Objects.requireNonNull(event, "L'événement ne peut pas être nul");
+        events.addEvent(event);
     }
 
-    public List<Event> eventsDansPeriode(LocalDateTime debut, LocalDateTime fin) {
-        List<Event> result = new ArrayList<>();
-        for (Event e : events) {
-            if (e.type.equals("PERIODIQUE")) {
-                LocalDateTime temp = e.dateDebut;
-                while (temp.isBefore(fin)) {
-                    if (!temp.isBefore(debut)) {
-                        result.add(e);
-                        break;
-                    }
-                    temp = temp.plusDays(e.frequenceJours);
-                }
-            } else if (!e.dateDebut.isBefore(debut) && !e.dateDebut.isAfter(fin)) {
-                result.add(e);
-            }
-        }
-        return result;
+    /**
+     * Méthode qui retourne la liste des événements dans une période donnée
+     * @return la liste des événements
+     */
+    public List<Event> eventsDansPeriode(Date debut, Date fin) {
+        return events.getEvents().stream()
+                .filter(e -> e.estDansPeriode(debut, fin))
+                .toList();
     }
 
-    public boolean conflit(Event e1, Event e2) {
-        LocalDateTime fin1 = e1.dateDebut.plusMinutes(e1.dureeMinutes);
-        LocalDateTime fin2 = e2.dateDebut.plusMinutes(e2.dureeMinutes);
-
-        if (e1.type.equals("PERIODIQUE") || e2.type.equals("PERIODIQUE")) {
-            return false; // Simplification abusive
-        }
-
-        if (e1.dateDebut.isBefore(fin2) && fin1.isAfter(e2.dateDebut)) {
-            return true;
-        }
-        return false;
-    }
-
+    /**
+     * Méthode qui affiche les événements
+     */
     public void afficherEvenements() {
-        for (Event e : events) {
+        for (Event e : events.getEvents()) {
             System.out.println(e.description());
         }
+    }
+
+    /**
+     * Méthode qui retourne vrai si les deux événements se chevauchent
+     * @param e1 le premier événement
+     * @param e2 le deuxième événement
+     * @return vrai si les deux événements se chevauchent
+     */
+    public boolean conflit(Event e1, Event e2) {
+        return e1.conflitAvec(e2);
     }
 }
