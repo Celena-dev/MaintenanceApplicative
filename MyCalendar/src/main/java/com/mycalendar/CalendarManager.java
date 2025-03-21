@@ -1,8 +1,9 @@
 package com.mycalendar;
 
-import com.mycalendar.attributs.*;
+import com.mycalendar.attributs.Date;
 import com.mycalendar.event.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,9 +33,9 @@ public class CalendarManager {
      * Méthode qui retourne la liste des événements dans une période donnée
      * @return la liste des événements
      */
-    public List<Event> eventsDansPeriode(Date debut, Date fin) {
+    public List<Event> eventsDansPeriode(LocalDateTime debut, LocalDateTime fin) {
         return events.getEvents().stream()
-                .filter(e -> e.estDansPeriode(debut, fin))
+                .filter(e -> e.estDansPeriode(new Date(debut), new Date(fin)))
                 .toList();
     }
 
