@@ -27,6 +27,8 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String utilisateur = "";
 
+        System.out.println(Logo.generateLogo());
+
         Utilisateur.connection(utilisateur, scanner);
 
 
