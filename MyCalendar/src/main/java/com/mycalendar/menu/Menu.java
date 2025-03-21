@@ -2,6 +2,7 @@ package com.mycalendar.menu;
 
 import com.mycalendar.Main;
 import com.mycalendar.attributs.*;
+import com.mycalendar.event.types.ConferenceVideo;
 import com.mycalendar.event.types.Periodique;
 import com.mycalendar.event.types.RDVPersonnel;
 import com.mycalendar.event.types.Reunion;
@@ -28,7 +29,8 @@ public class Menu {
             System.out.println("2 - Ajouter un rendez-vous perso");
             System.out.println("3 - Ajouter une réunion");
             System.out.println("4 - Ajouter un évènement périodique");
-            System.out.println("5 - Se déconnecter");
+            System.out.println("5 - Ajouter une conférence vidéo");
+            System.out.println("6 - Se déconnecter");
             System.out.print("Votre choix : ");
 
 
@@ -48,6 +50,9 @@ public class Menu {
                     ajouterEvenementPeriodique(utilisateur, scanner);
                     break;
                 case "5":
+                    ajouterEvenementConference(utilisateur, scanner);
+                    break;
+                case "6":
                     System.out.println("Au revoir !");
                     System.exit(0);
                     break;
@@ -177,6 +182,55 @@ public class Menu {
                         new Date(LocalDateTime.of(annee3, moisRdv3, jourRdv3, heure3, minute3)),
                         new DureeMinute(0),
                         new Frequence(frequence)
+                )
+        );
+
+
+        System.out.println("Événement ajouté.");
+        menu(utilisateur, scanner);
+    }
+
+    /**
+     * Methode qui ajoute une réunion
+     *
+     * @param utilisateur l'utilisateur connecte
+     * @param scanner     le scanner
+     */
+    public static void ajouterEvenementConference(String utilisateur, Scanner scanner) {
+        System.out.print("Titre de l'événement : ");
+        String titre2 = scanner.nextLine();
+        System.out.print("Année (AAAA) : ");
+        int annee2 = Integer.parseInt(scanner.nextLine());
+        System.out.print("Mois (1-12) : ");
+        int moisRdv2 = Integer.parseInt(scanner.nextLine());
+        System.out.print("Jour (1-31) : ");
+        int jourRdv2 = Integer.parseInt(scanner.nextLine());
+        System.out.print("Heure début (0-23) : ");
+        int heure2 = Integer.parseInt(scanner.nextLine());
+        System.out.print("Minute début (0-59) : ");
+        int minute2 = Integer.parseInt(scanner.nextLine());
+        System.out.print("Durée (en minutes) : ");
+        int duree2 = Integer.parseInt(scanner.nextLine());
+        System.out.println("Lien vidéo :");
+        String lien = scanner.nextLine();
+
+        List<String> ps = new ArrayList<>();
+        ps.add(utilisateur);
+
+        System.out.println("Ajouter un participant ? (oui / non)");
+        while (scanner.nextLine().equals("oui")) {
+            ps.add(scanner.nextLine());
+        }
+
+
+        Main.getCalendar().ajouterEvent(
+                new ConferenceVideo(
+                        new Titre(titre2),
+                        new Proprietaire(utilisateur),
+                        new Date(LocalDateTime.of(annee2, moisRdv2, jourRdv2, heure2, minute2)),
+                        new DureeMinute(duree2),
+                        new LienVideo(lien),
+                        new Participants(ps)
                 )
         );
 

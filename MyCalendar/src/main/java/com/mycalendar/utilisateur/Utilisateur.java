@@ -1,6 +1,7 @@
 package com.mycalendar.utilisateur;
 
 import com.mycalendar.menu.Logo;
+import com.mycalendar.menu.Menu;
 
 import java.util.Scanner;
 
@@ -45,24 +46,6 @@ public class Utilisateur {
     }
 
     /**
-     * Getter de l'attribut mdp
-     *
-     * @return mdp de l'utilisateur
-     */
-    public String getMdp() {
-        return mdp;
-    }
-
-    /**
-     * Setter de l'attribut mdp
-     *
-     * @param mdp nouveau mot de passe
-     */
-    public void setMdp(String mdp) {
-        this.mdp = mdp;
-    }
-
-    /**
      * Methode qui vérifie si le mot de passe est identique à celui de l'utilisateur
      *
      * @param m mot de passe à vérifier
@@ -89,12 +72,12 @@ public class Utilisateur {
 
             for (Utilisateur u : Utilisateurs.getUtilisateurs()) {
                 if (u.identique(motDePasse)) {
-                    System.out.println("Bienvenue " + utilisateur);
+                    Menu.menu(utilisateur, scanner);
                 }
             }
         }else{
             System.out.println("Nom d'utilisateur inconnu...");
-            connection(utilisateur, scanner);
+            connection(null, scanner);
         }
     }
 
@@ -113,10 +96,10 @@ public class Utilisateur {
         System.out.print("Répéter mot de passe: ");
         if (scanner.nextLine().equals(motDePasse)) {
             Utilisateurs.ajouterUtilisateur(new Utilisateur(utilisateur, motDePasse));
-            System.out.println("Bienvenue " + utilisateur);
+            Menu.menu(utilisateur, scanner);
         } else {
             System.out.println("Les mots de passes ne correspondent pas...");
-            connection(utilisateur, scanner);
+            creerCompte(null, scanner);
         }
     }
     /**
@@ -139,6 +122,10 @@ public class Utilisateur {
 
                 case "2":
                     creerCompte(utilisateur, scanner);
+                    break;
+                default:
+                    System.out.println("Choix invalide");
+                    connection(null, scanner);
                     break;
             }
         }

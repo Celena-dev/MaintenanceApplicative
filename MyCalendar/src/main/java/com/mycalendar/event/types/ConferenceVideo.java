@@ -6,8 +6,8 @@ import com.mycalendar.event.Event;
 /**
  * Classe représentant une réunion
  */
-public class Reunion extends Event {
-    private Lieu lieu;
+public class ConferenceVideo extends Event {
+    private LienVideo lien;
     private Participants participants;
 
     /**
@@ -16,12 +16,12 @@ public class Reunion extends Event {
      * @param proprietaire le propriétaire de l'événement
      * @param date la date de l'événement
      * @param dureeMinute la durée de l'événement
-     * @param lieu le lieu de la réunion
+     * @param lien le lieu de la réunion
      * @param participants les participants de la réunion
      */
-    public Reunion(Titre titre, Proprietaire proprietaire, Date date, DureeMinute dureeMinute, Lieu lieu, Participants participants) {
+    public ConferenceVideo(Titre titre, Proprietaire proprietaire, Date date, DureeMinute dureeMinute, LienVideo lien, Participants participants) {
         super(titre, proprietaire, date, dureeMinute, Type.REUNION);
-        this.lieu = lieu;
+        this.lien = lien;
         this.participants = participants;
     }
 
@@ -31,7 +31,7 @@ public class Reunion extends Event {
      */
     @Override
     public String description() {
-        return  "Réunion : " + titre.value() + " à " + lieu.value() + " avec " + participants;
+        return  "Réunion : " + titre.value() + " lien : " + lien.value() + " avec " + participants;
     }
 
     /**
@@ -59,3 +59,4 @@ public class Reunion extends Event {
 
 
 }
+

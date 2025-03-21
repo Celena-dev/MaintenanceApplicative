@@ -25,14 +25,12 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        String utilisateur = "";
+        String utilisateur = null;
 
-        System.out.println(Logo.generateLogo());
+        Logo.generateLogo();
 
         Utilisateur.connection(utilisateur, scanner);
 
-
-        Menu.menu(utilisateur, scanner);
 
     }
 

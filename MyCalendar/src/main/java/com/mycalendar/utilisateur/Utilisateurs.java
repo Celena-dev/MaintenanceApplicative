@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Utilisateurs {
-    private static ArrayList<Utilisateur> utilisateurs;
+    private static ArrayList<Utilisateur> utilisateurs = new ArrayList<>();
 
     public Utilisateurs() {
         utilisateurs = new ArrayList<>();
