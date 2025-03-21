@@ -14,8 +14,14 @@ import java.util.*;
 
 
 public class Main {
+    private static CalendarManager calendar = new CalendarManager();
+
+    public static CalendarManager getCalendar(){
+        return calendar;
+    }
+
     public static void main(String[] args) {
-        CalendarManager calendar = new CalendarManager();
+
         Scanner scanner = new Scanner(System.in);
         String utilisateur = null;
         boolean continuer = true;
@@ -103,76 +109,8 @@ public class Main {
 
                 switch (choix) {
                     case "1":
-                        System.out.println("\n=== Menu de visualisation d'Événements ===");
-                        System.out.println("1 - Afficher TOUS les événements");
-                        System.out.println("2 - Afficher les événements d'un MOIS précis");
-                        System.out.println("3 - Afficher les événements d'une SEMAINE précise");
-                        System.out.println("4 - Afficher les événements d'un JOUR précis");
-                        System.out.println("5 - Retour");
-                        System.out.print("Votre choix : ");
-
-
-                        choix = scanner.nextLine();
-
-
-                        switch (choix) {
-                            case "1":
-                                calendar.afficherEvenements();
-                                break;
-
-
-                            case "2":
-                                System.out.print("Entrez l'année (AAAA) : ");
-                                int anneeMois = Integer.parseInt(scanner.nextLine());
-                                System.out.print("Entrez le mois (1-12) : ");
-                                int mois = Integer.parseInt(scanner.nextLine());
-
-
-                                Date debutMois = new Date(LocalDateTime.of(anneeMois, mois, 1, 0, 0));
-                                Date finMois = new Date(LocalDateTime.of(debutMois.value().plusMonths(1).minusSeconds(1)));
-
-
-                                afficherListe(calendar.eventsDansPeriode(debutMois, finMois));
-                                break;
-
-
-                            case "3":
-                                System.out.print("Entrez l'année (AAAA) : ");
-                                int anneeSemaine = Integer.parseInt(scanner.nextLine());
-                                System.out.print("Entrez le numéro de semaine (1-52) : ");
-                                int semaine = Integer.parseInt(scanner.nextLine());
-
-
-                                LocalDateTime debutSemaine = LocalDateTime.now()
-                                        .withYear(anneeSemaine)
-                                        .with(WeekFields.of(Locale.FRANCE).weekOfYear(), semaine)
-                                        .with(WeekFields.of(Locale.FRANCE).dayOfWeek(), 1)
-                                        .withHour(0).withMinute(0);
-                                LocalDateTime finSemaine = debutSemaine.plusDays(7).minusSeconds(1);
-
-
-                                afficherListe(calendar.eventsDansPeriode(debutSemaine, finSemaine));
-                                break;
-
-
-                            case "4":
-                                System.out.print("Entrez l'année (AAAA) : ");
-                                int anneeJour = Integer.parseInt(scanner.nextLine());
-                                System.out.print("Entrez le mois (1-12) : ");
-                                int moisJour = Integer.parseInt(scanner.nextLine());
-                                System.out.print("Entrez le jour (1-31) : ");
-                                int jour = Integer.parseInt(scanner.nextLine());
-
-
-                                LocalDateTime debutJour = LocalDateTime.of(anneeJour, moisJour, jour, 0, 0);
-                                LocalDateTime finJour = debutJour.plusDays(1).minusSeconds(1);
-
-
-                                afficherListe(calendar.eventsDansPeriode(debutJour, finJour));
-                                break;
-                        }
+                        GestionnaireEven.gestionnaireEven(utilisateur, scanner);
                         break;
-
 
                     case "2":
                         // Ajout simplifié d'un RDV personnel
@@ -196,8 +134,8 @@ public class Main {
                                 new RDVPersonnel(
                                         new Titre(titre),
                                         new Proprietaire(utilisateur),
-                                        new Date(LocalDateTime.of(annee, moisRdv, jourRdv, heure, minute), duree),
-                                        new DureeEvent(duree)
+                                        new Date(LocalDateTime.of(annee, moisRdv, jourRdv, heure, minute)),
+                                        new DureeMinute(duree)
                                 )
                         );
 
@@ -272,9 +210,9 @@ public class Main {
                                 new Periodique(
                                         new Titre(titre3),
                                         new Proprietaire(utilisateur),
-                                        new Date(LocalDateTime.of(annee3, moisRdv3, jourRdv3, heure3, minute3), 0),
+                                        new Date(LocalDateTime.of(annee3, moisRdv3, jourRdv3, heure3, minute3)),
                                         new DureeMinute(0),
-                                        frequence
+                                        new Frequence(frequence)
                                 )
                         );
 
