@@ -82,17 +82,20 @@ public class Utilisateur {
         System.out.print("Nom d'utilisateur: ");
         utilisateur = scanner.nextLine();
 
-        if (Utilisateurs.nomDejaExistant(utilisateur)) {
+        if (Utilisateurs.nomDejaExistant(utilisateur) && utilisateur != null && !utilisateur.isEmpty()) {
             System.out.print("Mot de passe: ");
             String motDePasse = scanner.nextLine();
+
 
             for (Utilisateur u : Utilisateurs.getUtilisateurs()) {
                 if (u.identique(motDePasse)) {
                     System.out.println("Bienvenue " + utilisateur);
                 }
             }
+        }else{
+            System.out.println("Nom d'utilisateur inconnu...");
+            connection(utilisateur, scanner);
         }
-        connection(utilisateur, scanner);
     }
 
     /**

@@ -15,52 +15,57 @@ public class Menu {
 
     /**
      * Methode qui affiche le menu principal
-     * @param scanner le scanner
+     *
+     * @param scanner     le scanner
      * @param utilisateur l'utilisateur connecte
      */
-    public static void menu(String utilisateur, Scanner scanner){
-        System.out.println("\nBonjour, " + utilisateur);
-        System.out.println("=== Menu Gestionnaire d'Événements ===");
-        System.out.println("1 - Voir les événements");
-        System.out.println("2 - Ajouter un rendez-vous perso");
-        System.out.println("3 - Ajouter une réunion");
-        System.out.println("4 - Ajouter un évènement périodique");
-        System.out.println("5 - Se déconnecter");
-        System.out.print("Votre choix : ");
+    public static void menu(String utilisateur, Scanner scanner) {
+        if (utilisateur != null) {
+
+            System.out.println("\nBonjour, " + utilisateur);
+            System.out.println("=== Menu Gestionnaire d'Événements ===");
+            System.out.println("1 - Voir les événements");
+            System.out.println("2 - Ajouter un rendez-vous perso");
+            System.out.println("3 - Ajouter une réunion");
+            System.out.println("4 - Ajouter un évènement périodique");
+            System.out.println("5 - Se déconnecter");
+            System.out.print("Votre choix : ");
 
 
-        String choix = scanner.nextLine();
+            String choix = scanner.nextLine();
 
-        switch (choix){
-            case "1":
-                GestionnaireEven.gestionnaireEven(utilisateur, scanner);
-                break;
-            case "2":
-                ajouterRendezVous(utilisateur, scanner);
-                break;
-            case "3":
-                ajouterReunion(utilisateur, scanner);
-                break;
-            case "4":
-                ajouterEvenementPeriodique(utilisateur, scanner);
-                break;
-            case "5":
-                System.out.println("Au revoir !");
-                System.exit(0);
-                break;
-            default:
-                System.out.println("Choix invalide");
-                menu(utilisateur, scanner);
-                break;
+            switch (choix) {
+                case "1":
+                    GestionnaireEven.gestionnaireEven(utilisateur, scanner);
+                    break;
+                case "2":
+                    ajouterRendezVous(utilisateur, scanner);
+                    break;
+                case "3":
+                    ajouterReunion(utilisateur, scanner);
+                    break;
+                case "4":
+                    ajouterEvenementPeriodique(utilisateur, scanner);
+                    break;
+                case "5":
+                    System.out.println("Au revoir !");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Choix invalide");
+                    menu(utilisateur, scanner);
+                    break;
+            }
         }
     }
 
     /**
      * Methode qui ajoute un rendez-vous
+     *
      * @param utilisateur l'utilisateur connecte
-     * @param scanner le scanner
+     * @param scanner     le scanner
      */
-    public static void ajouterRendezVous(String utilisateur, Scanner scanner){
+    public static void ajouterRendezVous(String utilisateur, Scanner scanner) {
         // Ajout simplifié d'un RDV personnel
         System.out.print("Titre de l'événement : ");
         String titre = scanner.nextLine();
@@ -94,8 +99,9 @@ public class Menu {
 
     /**
      * Methode qui ajoute une réunion
+     *
      * @param utilisateur l'utilisateur connecte
-     * @param scanner le scanner
+     * @param scanner     le scanner
      */
     public static void ajouterReunion(String utilisateur, Scanner scanner) {
         System.out.print("Titre de l'événement : ");
@@ -143,8 +149,9 @@ public class Menu {
 
     /**
      * Methode qui ajoute un événement périodique
+     *
      * @param utilisateur l'utilisateur connecte
-     * @param scanner le scanner
+     * @param scanner     le scanner
      */
     public static void ajouterEvenementPeriodique(String utilisateur, Scanner scanner) {
         System.out.print("Titre de l'événement : ");
