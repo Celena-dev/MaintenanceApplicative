@@ -1,10 +1,10 @@
 package com.mycalendar.menu;
 
-import com.mycalendar.CalendarManager;
+import com.mycalendar.menu.*;
 import com.mycalendar.Main;
 import com.mycalendar.attributs.Date;
 import com.mycalendar.event.Event;
-import com.mycalendar.utilisateur.Utilisateurs;
+
 
 import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
@@ -72,16 +72,9 @@ public class GestionnaireEven {
      * @param scanner le mois
      */
     public static void afficherMois(String utilisateurs, Scanner scanner) {
-        System.out.print("Entrez l'année (AAAA) : ");
-        int anneeMois = scanner.nextInt();
+        int anneeMois = Valide.verifInt(scanner, "Entrez l'année (AAAA) : ", 2025, 2040);
+        int mois = Valide.verifInt(scanner, "Entrez le mois (1-12) : ", 1, 12);
 
-        System.out.print("Entrez le mois (1-12) : ");
-        int mois = scanner.nextInt();
-
-        if (!anneeValide(anneeMois) || !moisValide(mois)) {
-            System.out.println("Date invalide");
-            afficherMois(utilisateurs, scanner);
-        }
         Date debutMois = new Date(LocalDateTime.of(anneeMois, mois, 1, 0, 0));
         Date finMois = new Date(LocalDateTime.of(debutMois.value().getYear(), debutMois.value().getMonthValue(), debutMois.value().toLocalDate().lengthOfMonth(), 1, 1));
 
@@ -99,15 +92,9 @@ public class GestionnaireEven {
      * @param scanner     le scanner
      */
     public static void afficherSemaine(String utilisateur, Scanner scanner) {
-        System.out.print("Entrez l'année (AAAA) : ");
-        int anneeSemaine = scanner.nextInt();
-        System.out.print("Entrez le numéro de semaine (1-52) : ");
-        int semaine = scanner.nextInt();
+        int anneeSemaine = Valide.verifInt(scanner, "Entrez l'année (AAAA) : ", 2025, 2040);
+        int semaine = Valide.verifInt(scanner, "Entrez le numéro de semaine (1-52) : ", 1, 52);
 
-        if (!anneeValide(anneeSemaine) || !semaineValide(semaine)) {
-            System.out.println("Date invalide");
-            afficherSemaine(utilisateur, scanner);
-        }
         LocalDateTime debutSemaine = LocalDateTime.now()
                 .withYear(anneeSemaine)
                 .with(WeekFields.of(Locale.FRANCE).weekOfYear(), semaine)
@@ -115,11 +102,8 @@ public class GestionnaireEven {
                 .withHour(0).withMinute(0);
         LocalDateTime finSemaine = debutSemaine.plusDays(7).minusSeconds(1);
 
-
         afficherListe(Main.getCalendar().eventsDansPeriode(debutSemaine, finSemaine));
         gestionnaireEven(utilisateur, scanner);
-
-
     }
 
     /**
@@ -129,20 +113,12 @@ public class GestionnaireEven {
      * @param scanner     le scanner
      */
     public static void afficherJour(String utilisateur, Scanner scanner) {
-        System.out.print("Entrez l'année (AAAA) : ");
-        int anneeJour = scanner.nextInt();
-        System.out.print("Entrez le mois (1-12) : ");
-        int moisJour = scanner.nextInt();
-        System.out.print("Entrez le jour (1-31) : ");
-        int jour = scanner.nextInt();
+        int anneeJour = Valide.verifInt(scanner, "Entrez l'année (AAAA) : ", 2025, 2040);
+        int moisJour = Valide.verifInt(scanner, "Entrez le mois (1-12) : ", 1, 12);
+        int jour = Valide.verifInt(scanner, "Entrez le jour (1-31) : ", 1, 31);
 
-        if (!anneeValide(anneeJour) || !moisValide(moisJour) || !jourValide(jour)) {
-            System.out.println("Date invalide");
-            afficherJour(utilisateur, scanner);
-        }
         LocalDateTime debutJour = LocalDateTime.of(anneeJour, moisJour, jour, 0, 0);
         LocalDateTime finJour = debutJour.plusDays(1).minusSeconds(1);
-
 
         afficherListe(Main.getCalendar().eventsDansPeriode(debutJour, finJour));
         gestionnaireEven(utilisateur, scanner);
@@ -156,33 +132,13 @@ public class GestionnaireEven {
      * @param scanner     le scanner
      */
     public static void afficherPeriode(String utilisateur, Scanner scanner) {
-        System.out.print("Entrez l'année (AAAA) : ");
-        int anneeDebut = scanner.nextInt();
+        int anneeDebut = Valide.verifInt(scanner, "Entrez l'année (AAAA) : ", 2025, 2040);
+        int moisDebut= Valide.verifInt(scanner, "Entrez le mois (1-12) : ", 1, 12);
+        int jourDebut = Valide.verifInt(scanner, "Entrez le jours (1-31) : ", 1, 31);
 
-        System.out.print("Entrez le mois (1-12) : ");
-        int moisDebut = scanner.nextInt();
-
-        System.out.print("Entrez le jour de début (1-31) : ");
-        int jourDebut = scanner.nextInt();
-
-        if (!anneeValide(anneeDebut) || !moisValide(moisDebut) || !jourValide(jourDebut)) {
-            System.out.println("Date invalide");
-            afficherPeriode(utilisateur, scanner);
-        }
-
-        System.out.print("Entrez l'année de fin (AAAA) : ");
-        int anneeFin = scanner.nextInt();
-
-        System.out.print("Entrez le mois de fin (1-12) : ");
-        int moisFin = scanner.nextInt();
-
-        System.out.print("Entrez le jour de fin (1-31) : ");
-        int jourFin = scanner.nextInt();
-
-        if (!anneeValide(anneeFin) || !moisValide(moisFin) || !jourValide(jourFin)) {
-            System.out.println("Date invalide");
-            afficherPeriode(utilisateur, scanner);
-        }
+        int anneeFin = Valide.verifInt(scanner, "Entrez l'année de fin (AAAA) : ", 2025, 2040);
+        int moisFin = Valide.verifInt(scanner, "Entrez le mois de fin (1-12) : ", 1, 12);
+        int jourFin = Valide.verifInt(scanner, "Entrez le jours de fin (1-31) : ", 1, 31);
 
         LocalDateTime debut = LocalDateTime.of(anneeDebut, moisDebut, jourDebut, 0, 0);
         LocalDateTime fin = LocalDateTime.of(anneeFin, moisFin, jourFin, 23, 59);
@@ -212,44 +168,5 @@ public class GestionnaireEven {
         }
     }
 
-    /**
-     * Méthode qui vérifie que l'année est valide
-     *
-     * @param annee l'année
-     * @return vrai si l'année est valide
-     */
-    public static boolean anneeValide(int annee) {
-        return annee >= 2000;
-    }
-
-    /**
-     * Méthode qui vérifie que le mois est valide
-     *
-     * @param mois le mois
-     * @return vrai si le mois est valide
-     */
-    public static boolean moisValide(int mois) {
-        return mois >= 1 && mois <= 12;
-    }
-
-    /**
-     * Méthode qui vérifie que le jour est valide
-     *
-     * @param jour le jour
-     * @return vrai si le jour est valide
-     */
-    public static boolean jourValide(int jour) {
-        return jour >= 1 && jour <= 31;
-    }
-
-    /**
-     * Méthode qui vérifie que le numéro de semaine est valide
-     *
-     * @param semaine le numéro de semaine
-     * @return vrai si le numéro de semaine est valide
-     */
-    public static boolean semaineValide(int semaine) {
-        return semaine >= 1 && semaine <= 52;
-    }
 
 }

@@ -111,18 +111,14 @@ public class Menu {
     public static void ajouterReunion(String utilisateur, Scanner scanner) {
         System.out.print("Titre de l'événement : ");
         String titre2 = scanner.nextLine();
-        System.out.print("Année (AAAA) : ");
-        int annee2 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Mois (1-12) : ");
-        int moisRdv2 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Jour (1-31) : ");
-        int jourRdv2 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Heure début (0-23) : ");
-        int heure2 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Minute début (0-59) : ");
-        int minute2 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Durée (en minutes) : ");
-        int duree2 = Integer.parseInt(scanner.nextLine());
+
+        int annee2 = Valide.verifInt(scanner, "Entrez l'année (AAAA) : ", 2025, 2040);
+        int moisRdv2 = Valide.verifInt(scanner, "Entrez le mois (1-12) : ", 1, 12);
+        int jourRdv2 = Valide.verifInt(scanner, "Entrez le jour (1-31) : ", 1, 31);
+        int heure2 = Valide.verifInt(scanner, "Entrez l'heure de début (0-23) : ", 0, 23);
+        int minute2 = Valide.verifInt(scanner, "Entrez la minute de debut (0-59) : ", 0, 59);
+        int duree2 = Valide.verifInt(scanner, "Durée (en minutes) : ", 0, 1440);
+
         System.out.println("Lieu :");
         String lieu = scanner.nextLine();
 
@@ -161,18 +157,13 @@ public class Menu {
     public static void ajouterEvenementPeriodique(String utilisateur, Scanner scanner) {
         System.out.print("Titre de l'événement : ");
         String titre3 = scanner.nextLine();
-        System.out.print("Année (AAAA) : ");
-        int annee3 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Mois (1-12) : ");
-        int moisRdv3 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Jour (1-31) : ");
-        int jourRdv3 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Heure début (0-23) : ");
-        int heure3 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Minute début (0-59) : ");
-        int minute3 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Frequence (en jours) : ");
-        int frequence = Integer.parseInt(scanner.nextLine());
+
+        int annee3 = Valide.verifInt(scanner, "Entrez l'année (AAAA) : ", 2025, 2040);
+        int moisRdv3 = Valide.verifInt(scanner, "Entrez le mois (1-12) : ", 1, 12);
+        int jourRdv3 = Valide.verifInt(scanner, "Entrez le jour (1-31) : ", 1, 31);
+        int heure3 = Valide.verifInt(scanner, "Entrez l'heure de début (0-23) : ", 0, 23);
+        int minute3 = Valide.verifInt(scanner, "Entrez la minute de debut (0-59) : ", 0, 59);
+        int frequence = Valide.verifInt(scanner, "Frequence (en jours) : (1-31) : ", 1, 31);
 
 
         Main.getCalendar().ajouterEvent(
@@ -199,19 +190,15 @@ public class Menu {
     public static void ajouterEvenementConference(String utilisateur, Scanner scanner) {
         System.out.print("Titre de l'événement : ");
         String titre2 = scanner.nextLine();
-        System.out.print("Année (AAAA) : ");
-        int annee2 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Mois (1-12) : ");
-        int moisRdv2 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Jour (1-31) : ");
-        int jourRdv2 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Heure début (0-23) : ");
-        int heure2 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Minute début (0-59) : ");
-        int minute2 = Integer.parseInt(scanner.nextLine());
-        System.out.print("Durée (en minutes) : ");
-        int duree2 = Integer.parseInt(scanner.nextLine());
+
+        int annee2 = Valide.verifInt(scanner, "Entrez l'année (AAAA) : ", 2025, 2040);
+        int moisRdv2 = Valide.verifInt(scanner, "Entrez le mois (1-12) : ", 1, 12);
+        int jourRdv2 = Valide.verifInt(scanner, "Entrez le jour (1-31) : ", 1, 31);
+        int heure2 = Valide.verifInt(scanner, "Entrez l'heure de début (0-23) : ", 0, 23);
+        int minute2 = Valide.verifInt(scanner, "Entrez la minute de debut (0-59) : ", 0, 59);
+        int duree2 = Valide.verifInt(scanner, "Durée (en minutes) : ", 0, 1440);
         System.out.println("Lien vidéo :");
+
         String lien = scanner.nextLine();
 
         List<String> ps = new ArrayList<>();
