@@ -25,6 +25,12 @@ public class CalendarManager {
      * @param event l'événement à ajouter
      */
     public void ajouterEvent(Event event) {
+        for (Event e : events.getEvents()) {
+            if (conflit(e, event)) {
+                System.out.println("L'événement se chevauche avec un autre événement");
+                return;
+            }
+        }
         Objects.requireNonNull(event, "L'événement ne peut pas être nul");
         events.addEvent(event);
     }
